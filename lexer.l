@@ -23,6 +23,6 @@ blank  [ \t\r]
 
 .        { printf("Error with '%s'", yytext); }
 
-<<EOF>>  {}
+<<EOF>>  { return END; }
 
 %%

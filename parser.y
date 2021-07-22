@@ -17,6 +17,8 @@ void yyerror (char* e);
   double dnum;
 }
 
+%token END 0 "end of file"
+
 %token
   <op> ADD "+"
   <op> SUB "-"
@@ -35,8 +37,8 @@ void yyerror (char* e);
 %left "+" "-";
 
 exprlist:
-  %empty
-  {}
+  expr ";"
+  { printf("result: %d", $1); }
 | exprlist expr ";"
   { printf("result: %d", $2); }
 ;
@@ -63,5 +65,5 @@ int main() {
 }
 
 void yyerror (char* e) {
-  fprintf(stderr, "%s\n", e);
+  printf("%s\n", e);
 }
