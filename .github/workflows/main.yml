@@ -17,9 +17,10 @@ jobs:
         run: sudo apt-get install flex libfl-dev
 
       - name: Build
-        run: bison -d parser.y -o parser.c
-             flex -o lexer.c lexer.l
-             gcc lexer.c parser.c -lfl -o simplecalc
+        run: |
+          bison -d parser.y -o parser.c
+          flex -o lexer.c lexer.l
+          gcc lexer.c parser.c -lfl -o simplecalc
 
       - name: Test
         run: ./run_tests.sh
