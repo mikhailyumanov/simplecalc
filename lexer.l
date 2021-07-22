@@ -1,6 +1,6 @@
 %{
 
-#include "stdio.h"
+#include "parser.h"
 
 %}
 
@@ -11,23 +11,18 @@ blank  [ \t\r]
 
 {blank}+ {}
 
-"+"      { return 1; }
-"-"      { return 2; }
-"*"      { return 3; }
-"/"      { return 4; }
-"("      { return 5; }
-")"      { return 6; }
+"+"      { return ADD; }
+"-"      { return SUB; }
+"*"      { return MUL; }
+"/"      { return DIV; }
+"("      { return LBR; }
+")"      { return RBR; }
+";"      { return SMC; }
 
-{number} { return strtol(yytext, NULL, 10); 
-         }
+{number} { yylval.inum = strtol(yytext, NULL, 10); return number; }
 
 .        { printf("Error with '%s'", yytext); }
 
-%%
+<<EOF>>  {}
 
-int main() {
-  int tok;
-  while (tok = yylex()) {
-    printf("%d ", tok);
-  }
-}
+%%
