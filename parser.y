@@ -33,8 +33,8 @@ void yyerror (char* e);
 
 %%
 
-%left "/" "*";
 %left "+" "-";
+%left "/" "*";
 
 exprlist:
   expr ";"
