@@ -4,7 +4,8 @@
 
 %}
 
-number [0-9]+
+inum   [0-9]+
+dnum   [0-9]+"."[0-9]*|[0-9]*"."[0-9]+
 blank  [ \t\r]
 
 %%
@@ -19,7 +20,8 @@ blank  [ \t\r]
 ")"      { return RBR; }
 ";"      { return SMC; }
 
-{number} { yylval.inum = strtol(yytext, NULL, 10); return number; }
+{inum}   { yylval.inum = strtol(yytext, NULL, 10); return inum; }
+{dnum}   { yylval.dnum = strtod(yytext, NULL);     return dnum; }
 
 .        { printf("Error with '%s'", yytext); }
 

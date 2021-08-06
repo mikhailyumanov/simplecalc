@@ -24,7 +24,7 @@ do
       status=0
     else
       echo FAILED
-      status = 1
+      status=1
       diff "./test/tmp/$test" "./test/out/$test"
     fi
   else

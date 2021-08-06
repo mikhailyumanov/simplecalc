@@ -28,8 +28,10 @@ void yyerror (char* e);
   <op> RBR ")"
   <op> SMC ";"
 
-%token <inum> number "number"
-%nterm <inum> expr
+%token <inum> inum "inum"
+%token <dnum> dnum "dnum"
+%nterm <inum> inumexpr
+%nterm <dnum> dnumexpr
 
 %%
 
@@ -37,24 +39,62 @@ void yyerror (char* e);
 %left "/" "*";
 
 exprlist:
-  expr ";"
+  dnumexpr ";"
+  { printf("result: %f", $1); }
+| inumexpr ";"
   { printf("result: %d", $1); }
-| exprlist expr ";"
+| exprlist dnumexpr ";"
+  { printf("result: %f", $2); }
+| exprlist inumexpr ";"
   { printf("result: %d", $2); }
 ;
 
-expr:
-  number
-  { $$ = $number; }
-| "(" expr ")"
+dnumexpr:
+  dnum
+  { $$ = $dnum; }
+| "(" dnumexpr ")"
   { $$ = $2; }
-| expr[l] "+" expr[r]
+
+| dnumexpr[l] "+" dnumexpr[r]
   { $$ = $l + $r; }
-| expr[l] "-" expr[r]
+| dnumexpr[l] "-" dnumexpr[r]
   { $$ = $l - $r; }
-| expr[l] "*" expr[r]
+| dnumexpr[l] "*" dnumexpr[r]
   { $$ = $l * $r; }
-| expr[l] "/" expr[r]
+| dnumexpr[l] "/" dnumexpr[r]
+  { $$ = $l / $r; }
+
+| dnumexpr[l] "+" inumexpr[r]
+  { $$ = $l + $r; }
+| dnumexpr[l] "-" inumexpr[r]
+  { $$ = $l - $r; }
+| dnumexpr[l] "*" inumexpr[r]
+  { $$ = $l * $r; }
+| dnumexpr[l] "/" inumexpr[r]
+  { $$ = $l / $r; }
+
+| inumexpr[l] "+" dnumexpr[r]
+  { $$ = $l + $r; }
+| inumexpr[l] "-" dnumexpr[r]
+  { $$ = $l - $r; }
+| inumexpr[l] "*" dnumexpr[r]
+  { $$ = $l * $r; }
+| inumexpr[l] "/" dnumexpr[r]
+  { $$ = $l / $r; }
+;
+
+inumexpr:
+  inum
+  { $$ = $inum; }
+| "(" inumexpr ")"
+  { $$ = $2; }
+| inumexpr[l] "+" inumexpr[r]
+  { $$ = $l + $r; }
+| inumexpr[l] "-" inumexpr[r]
+  { $$ = $l - $r; }
+| inumexpr[l] "*" inumexpr[r]
+  { $$ = $l * $r; }
+| inumexpr[l] "/" inumexpr[r]
   { $$ = $l / $r; }
 ;
 
